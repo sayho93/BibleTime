@@ -253,6 +253,18 @@
                 })
             }
         });
+
+        $(document).on("click", ".jChange", function(e){
+            var id = $(this).attr("id");
+            var res = $(this).attr("flag");
+            var ajax = new AjaxSender("/route.php?cmd=Management.changePaymentStatus", true, "json", new sehoMap().put("id", id).put("res", res));
+            ajax.send(function(data){
+                if(data.returnCode === 1){
+                    alert("변경되었습니다.");
+                    location.reload();
+                }
+            })
+        });
     });
 </script>
 
@@ -559,30 +571,37 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
+                                switch($subItem["paymentResult"]){
+                                    case "0":
+                                        echo "btn-danger";
+                                        break;
+                                    case "1":
+                                        echo "btn-primary";
+                                        break;
+                                    case "2":
+                                        echo "btn-success";
+                                        break;
+                                }
+                                ?> dropdown-toggle" data-toggle="dropdown">
+                                    <?
                                     switch($subItem["paymentResult"]){
                                         case "0":
-                                            echo "btn-danger";
-                                            break;
-                                        case "1":
-                                            echo "btn-primary";
+                                            echo "미결제";
                                             break;
                                         case "2":
-                                            echo "btn-success";
+                                            echo "처리중";
+                                            break;
+                                        case "1":
+                                            echo "완료";
                                             break;
                                     }
-                                ?>"><?
-                                        switch($subItem["paymentResult"]){
-                                            case "0":
-                                                echo "실패";
-                                                break;
-                                            case "1":
-                                                echo "성공";
-                                                break;
-                                            case "2":
-                                                echo "처리중";
-                                                break;
-                                        }
-                                    ?></button>
+                                    ?>
+                                </button>
+                                <div class="dropdown-menu jsss">
+                                    <a class="dropdown-item jChange" id="<?=$subItem["idx"]?>" flag="0">미결제</a>
+                                    <a class="dropdown-item jChange" id="<?=$subItem["idx"]?>" flag="1">완료</a>
+                                    <a class="dropdown-item jChange" id="<?=$subItem["idx"]?>" flag="2">처리중</a>
+                                </div>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-secondary jSaveSub" id="<?=$subItem["id"]?>">저장</button>
@@ -677,7 +696,7 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
-                                switch($subItem["paymentResult"]){
+                                switch($supItem["paymentResult"]){
                                     case "0":
                                         echo "btn-danger";
                                         break;
@@ -688,19 +707,26 @@
                                         echo "btn-success";
                                         break;
                                 }
-                                ?>"><?
-                                    switch($subItem["paymentResult"]){
+                                ?> dropdown-toggle" data-toggle="dropdown">
+                                    <?
+                                    switch($supItem["paymentResult"]){
                                         case "0":
-                                            echo "실패";
-                                            break;
-                                        case "1":
-                                            echo "성공";
+                                            echo "미결제";
                                             break;
                                         case "2":
                                             echo "처리중";
                                             break;
+                                        case "1":
+                                            echo "완료";
+                                            break;
                                     }
-                                    ?></button>
+                                    ?>
+                                </button>
+                                <div class="dropdown-menu jsss">
+                                    <a class="dropdown-item jChange" id="<?=$supItem["idx"]?>" flag="0">미결제</a>
+                                    <a class="dropdown-item jChange" id="<?=$supItem["idx"]?>" flag="1">완료</a>
+                                    <a class="dropdown-item jChange" id="<?=$supItem["idx"]?>" flag="2">처리중</a>
+                                </div>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-secondary jSaveSup" id="<?=$supItem["id"]?>">저장</button>

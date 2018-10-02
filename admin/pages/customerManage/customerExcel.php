@@ -6,9 +6,17 @@
  * Time: PM 6:32
  */
 include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/AdminMain.php";
+include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/Management.php";
 
 $obj = new AdminMain($_REQUEST);
-$list = $obj->getCustomerExcelList();
+$manage = new Management($_REQUEST);
+$list = array();
+
+if($_REQUEST["isDetail"] == "true"){
+    $list = $manage->getCustomerDetailExcelList();
+}else{
+    $list = $obj->getCustomerExcelList();
+}
 //echo json_encode($list);
 ?>
 

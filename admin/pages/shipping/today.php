@@ -142,7 +142,9 @@
                 <th>이름</th>
                 <th>연락처</th>
                 <th>주소</th>
+                <th>우편번호</th>
                 <th>품명</th>
+                <th>수량</th>
                 <th>담당자</th>
                 <th>유형</th>
                 <th>배송사고 이력</th>
@@ -154,7 +156,9 @@
                     <td><?=$item0["rName"]?></td>
                     <td style='mso-number-format:"\@"'><?=$item0["phone"]?></td>
                     <td><?=$item0["addr"] . $item0["addrDetail"]?></td>
+                    <td><?=$item0["zipcode"]?></td>
                     <td><?=$item0["publicationName"]?></td>
+                    <td><?=$item0["cnt"]?></td>
                     <td><?=$item0["manager"]?></td>
                     <td><?=$item0["type"] == "0" ? "신규배송" : "재배송"?></td>
                     <td>
@@ -173,7 +177,9 @@
                     <td><?=$item1["rName"]?></td>
                     <td style='mso-number-format:"\@"'><?=$item1["phone"]?></td>
                     <td><?=$item1["addr"] . $item1["addrDetail"]?></td>
+                    <td><?=$item1["zipcode"]?></td>
                     <td><?=$item1["publicationName"]?></td>
+                    <td><?=$item1["cnt"]?></td>
                     <td><?=$item1["manager"]?></td>
                     <td><?=$item1["type"] == "0" ? "신규배송" : "재배송"?></td>
                     <td>

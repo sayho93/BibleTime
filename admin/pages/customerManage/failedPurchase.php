@@ -24,7 +24,7 @@
             location.href = "/admin/pages/customerManage/failedPurchase.php?type=" + type;
         });
 
-        $(document).on("click", ".jChange", function(){
+        $(document).on("click", ".jChange", function(e){
             var id = $(this).attr("id");
             var res = $(this).attr("flag");
             var ajax = new AjaxSender("/route.php?cmd=Management.changePaymentStatus", true, "json", new sehoMap().put("id", id).put("res", res));
@@ -36,7 +36,7 @@
             })
         });
 
-        $(document).on("click", ".jFlag", function(){
+        $(document).on("click", ".jFlag", function(e){
             var id = $(this).attr("id");
             var res = $(this).attr("flag");
             var ajax = new AjaxSender("/route.php?cmd=Management.changePaymentFlag", true, "json", new sehoMap().put("id", id).put("res", res));
@@ -103,7 +103,7 @@
         });
 
         $(".jView").click(function(){
-            var id = $(this).attr("id")
+            var id = $(this).parent().attr("id")
            location.href = "/admin/pages/customerManage/customerDetail.php?id=" + id;
         });
 
@@ -142,13 +142,26 @@
 
         <p class="mt-2">※ 취소여부는 관리 편의 및 통계 집계를 위한 것으로 타 데이터 및 결제사와 연동되지 않습니다.</p>
 
+        <select class="custom-select jOpt" id="jYear" style="width: 20%">
+            <?for($e = 1950; $e < intval(date("Y")) + 50; $e++){?>
+                <option value="<?=$e?>" <?=$e == intval($_REQUEST["year"]) ? "SELECTED" : ""?>><?=$e?>년</option>
+            <?}?>
+        </select>
+        <select class="custom-select jOpt" id="jMonth" style="width: 20%">
+            <?for($e = 1; $e <= 12; $e++){?>
+                <option value="<?=$e < 10 ? "0".$e : $e?>" <?=$e == intval($_REQUEST["month"]) ? "SELECTED" : ""?>><?=$e < 10 ? "0".$e : $e?>월</option>
+            <?}?>
+        </select>
+
+        <br/><br/>
+
         <form id="form">
             <input type="hidden" name="page" />
             <input type="file" name="docFile" style="display: none;"/>
             <div class="btn-group float-left" role="group">
                 <button type="button" class="btn jType <?=$type == "BA" ? "btn-secondary" : ""?>" value="BA">자동이체</button>
-                <button type="button" class="btn jType <?=$type == "CC" ? "btn-secondary" : ""?>" value="CC">카드</button>
                 <button type="button" class="btn jType <?=$type == "FC" ? "btn-secondary" : ""?>" value="FC">해외카드</button>
+                <button type="button" class="btn jType <?=$type == "CC" ? "btn-secondary" : ""?>" value="CC">직접관리</button>
             </div>
 
             <div class="btn-group float-right mb-2" role="group" aria-label="Basic example">
@@ -178,22 +191,22 @@
                     </thead>
                     <tbody>
                     <?foreach($list as $item){?>
-                        <tr class="jView" id="<?=$item["customerId"]?>">
-                            <td><?=$item["ownerName"]?></td>
-                            <td><?=$item["primeRes"]["memberStatus"] == "1" ? "정상" : "해지"?></td>
-                            <td>
+                        <tr id="<?=$item["customerId"]?>">
+                            <td class="jView"><?=$item["ownerName"]?></td>
+                            <td class="jView"><?=$item["primeRes"]["memberStatus"] == "1" ? "정상" : "해지"?></td>
+                            <td class="jView">
                                 <?
                                     if($item["primeRes"]["chargeRes"] != 1) echo "출금불능";
                                     else echo "<br>출금완료";
                                     if($item["primeRes"]["bankRes"] != 1) echo "<br>해지";
                                 ?>
                             </td>
-                            <td><?=$item["bankDesc"]?></td>
-                            <td style='mso-number-format:"\@"'><?=$item["info"]?></td>
-                            <td><?=$item["primeIndex"]?></td>
-                            <td><?=$item["monthlyDate"]?></td>
-                            <td><?=$item["totalPrice"]?></td>
-                            <td><?=$item["regDate"]?></td>
+                            <td class="jView"><?=$item["bankDesc"]?></td>
+                            <td  class="jView" style='mso-number-format:"\@"'><?=$item["info"]?></td>
+                            <td class="jView"><?=$item["primeIndex"]?></td>
+                            <td class="jView"><?=$item["monthlyDate"]?></td>
+                            <td class="jView"><?=$item["totalPrice"]?></td>
+                            <td class="jView"><?=$item["regDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){
@@ -276,14 +289,14 @@
                     </thead>
                     <tbody>
                     <?foreach($list as $item){?>
-                        <tr class="jView" id="<?=$item["customerId"]?>">
-                            <td><?=$item["ownerName"]=="" ? "(미입력)" : $item["ownerName"]?></td>
-                            <td><?=$item["cardDesc"]?><?if($item["cardTypeId"]==-1) echo "(직접입금)";?></td>
-                            <td style='mso-number-format:"\@"'><?=$item["cardTypeId"]==-1 ? "" : $item["info"]?></td>
-                            <td><?=$item["cardTypeId"]==-1 ? "" : $item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
-                            <td><?=$item["monthlyDate"]?></td>
-                            <td><?=$item["totalPrice"]?></td>
-                            <td><?=$item["regDate"]?></td>
+                        <tr id="<?=$item["customerId"]?>">
+                            <td class="jView"><?=$item["ownerName"]=="" ? "(미입력)" : $item["ownerName"]?></td>
+                            <td class="jView"><?=$item["cardDesc"]?><?if($item["cardTypeId"]==-1) echo "(직접입금)";?></td>
+                            <td class="jView" style='mso-number-format:"\@"'><?=$item["cardTypeId"]==-1 ? "" : $item["info"]?></td>
+                            <td class="jView"><?=$item["cardTypeId"]==-1 ? "" : $item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
+                            <td class="jView"><?=$item["monthlyDate"]?></td>
+                            <td class="jView"><?=$item["totalPrice"]?></td>
+                            <td class="jView"><?=$item["regDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){
@@ -365,13 +378,13 @@
                     </thead>
                     <tbody>
                     <?foreach($list as $item){?>
-                        <tr class="jView" id="<?=$item["customerId"]?>">
-                            <td><?=$item["aFirstname"] . " " . $item["aLastname"]?></td>
-                            <td style='mso-number-format:"\@"'><?=$item["info"]?></td>
-                            <td><?=$item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
-                            <td><?=$item["monthlyDate"]?></td>
-                            <td><?=$item["totalPrice"]?></td>
-                            <td><?=$item["regDate"]?></td>
+                        <tr id="<?=$item["customerId"]?>">
+                            <td class="jView"><?=$item["aFirstname"] . " " . $item["aLastname"]?></td>
+                            <td class="jView" style='mso-number-format:"\@"'><?=$item["info"]?></td>
+                            <td class="jView"><?=$item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
+                            <td class="jView"><?=$item["monthlyDate"]?></td>
+                            <td class="jView"><?=$item["totalPrice"]?></td>
+                            <td class="jView"><?=$item["regDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){

@@ -31,43 +31,150 @@ if(!class_exists("Management")){
             return $this->conditionalQuery($dest, $_REQUEST[$idx], $sql);
         }
 
-        function customerListDetail(){
+        function customerDetailWhere(){
             $pMonth = intval($_REQUEST["pMonth"]);
             $eMonth = intval($_REQUEST["eMonth"]);
 
             $where = "WHERE 1=1";
-            $orderBy = "ORDER BY `regDate` DESC";
-
             $where = $this->appendByReq($where, "email", "AND `email` LIKE '%{$_REQUEST["email"]}%'");
             $where = $this->appendByReq($where, "phone", "AND `phone` LIKE '%{$_REQUEST["phone"]}%'");
             $where = $this->appendByReq($where, "name", "AND `name` LIKE '%{$_REQUEST["name"]}%'");
-            $where = $this->appendByReq($where, "code", "AND `id` IN (SELECT (SELECT customerId FROM tblPayMethod WHERE `id`=`payMethodId`) AS cid FROM tblPayment WHERE `primeIndex` LIKE '%{$_REQUEST["code"]}%')");
-            $where = $this->appendByReq($where, "sMethod", "AND `id` IN (SELECT `customerId` FROM tblSubscription WHERE `subType` = '{$_REQUEST["sMethod"]}')");
-            $where = $this->appendByReq($where, "sName", "AND `id` IN (SELECT `customerId` FROM tblSupport WHERE `assemblyName` LIKE '%{$_REQUEST["sName"]}%')");
+            $where = $this->appendByReq($where, "code", "AND tblCustomer.`id` IN (SELECT (SELECT customerId FROM tblPayMethod WHERE tblPayMethod.`id`=`payMethodId`) AS cid FROM tblPayment WHERE `primeIndex` LIKE '%{$_REQUEST["code"]}%')");
+            $where = $this->appendByReq($where, "sMethod", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `subType` = '{$_REQUEST["sMethod"]}')");
+            $where = $this->appendByReq($where, "sName", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSupport WHERE `assemblyName` LIKE '%{$_REQUEST["sName"]}%')");
             $where = $this->appendByReq($where, "addr", "AND CONCAT(`addr`, ' ', `addrDetail`) LIKE '%{$_REQUEST["addr"]}%'");
 
-            if($_REQUEST["pYear"] != "" && $_REQUEST["pMonth"] != "") $where .= " AND `id` IN (SELECT `customerId` FROM tblSubscription WHERE `pYear`='{$_REQUEST["pYear"]}' AND `pMonth`='{$pMonth}')";
-            if($_REQUEST["eYear"] != "" && $_REQUEST["eMonth"] != "") $where .= " AND `id` IN (SELECT `customerId` FROM tblSubscription WHERE `eYear`='{$_REQUEST["eYear"]}' AND `eMonth`='{$eMonth}')";
+            if($_REQUEST["pYear"] != "" && $_REQUEST["pMonth"] != "") $where .= " AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `pYear`='{$_REQUEST["pYear"]}' AND `pMonth`='{$pMonth}')";
+            if($_REQUEST["eYear"] != "" && $_REQUEST["eMonth"] != "") $where .= " AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `eYear`='{$_REQUEST["eYear"]}' AND `eMonth`='{$eMonth}')";
 
-            $where = $this->appendByReq($where, "shippingType", "AND `id` IN (SELECT `customerId` FROM tblSubscription WHERE `shippingType` = '{$_REQUEST["shippingType"]}')");
-            $where = $this->appendByReq($where, "version", "AND `id` IN (SELECT `customerId` FROM tblSubscription WHERE `publicationId` = '{$_REQUEST["version"]}')");
-            $where = $this->appendByReq($where, "status", "AND (`id` IN (SELECT `customerId` FROM tblSubscription WHERE `deliveryStatus` = '{$_REQUEST["status"]}')
+            $where = $this->appendByReq($where, "shippingType", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `shippingType` = '{$_REQUEST["shippingType"]}')");
+            $where = $this->appendByReq($where, "version", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `publicationId` = '{$_REQUEST["version"]}')");
+            $where = $this->appendByReq($where, "status", "AND (tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `deliveryStatus` = '{$_REQUEST["status"]}')
                                                                           OR
-                                                                            `id` IN (SELECT `customerId` FROM tblSupport WHERE `status` = '{$_REQUEST["status"]}')
+                                                                            tblCustomer.`id` IN (SELECT `customerId` FROM tblSupport WHERE `status` = '{$_REQUEST["status"]}')
                                                                             )");
+            $where = $this->appendByReq($where, "aDate", "AND 
+            tblCustomer.`id` IN (SELECT customerId FROM tblSubscription WHERE DATE(regDate) = DATE('{$_REQUEST["aDate"]}') UNION ALL
+                                SELECT customerId FROM tblSupport WHERE DATE(regDate) = DATE('{$_REQUEST["aDate"]}'))
+            ");
 
-            if($_REQUEST["rYear"] != "" && $_REQUEST["rMonth"] != ""){
-                $where .= " AND (
-               `id` IN (SELECT `customerId` FROM tblSubscription WHERE DATE_FORMAT(`regDate`,'%Y-%m')='{$_REQUEST["rYear"]}-{$_REQUEST["rMonth"]}') 
-               OR `id` IN (SELECT `customerId` FROM tblSupport WHERE DATE_FORMAT(`regDate`,'%Y-%m')='{$_REQUEST["rYear"]}-{$_REQUEST["rMonth"]}'))";
-            }
+            return $where;
+        }
+
+        function customerListDetail(){
+            $orderBy = "ORDER BY `regDate` DESC";
+            $where = $this->customerDetailWhere();
 
             $sql = "SELECT * FROM tblCustomer {$where} {$orderBy}";
 
             return $this->getArray($sql);
         }
 
+        function customerDetailIDs(){
+            $orderBy = "ORDER BY `regDate` DESC";
+            $where = $this->customerDetailWhere();
+
+            $sql = "SELECT `id` FROM tblCustomer {$where} {$orderBy}";
+
+            return $this->getArray($sql);
+        }
+
+        function getCustomerDetailExcelList(){
+            $arr = $this->customerDetailIDs();
+            $imp = "";
+
+            for($e = 0; $e < sizeof($arr); $e++){
+                $imp .= "'";
+                $imp .= $arr[$e]["id"];
+                $imp .= "'";
+                if($e + 1 < sizeof($arr)) $imp .= ",";
+            }
+
+
+            $where = "C.id IN ({$imp})";
+
+            $sql = "
+                SELECT 
+                  *,
+                  C.type as customerType,
+                  PM.type as paymentType,
+                  (SELECT `desc` FROM tblCardType WHERE `id` = cardTypeId) as cardDesc,
+                  (SELECT `desc` FROM tblBankType WHERE `code` = bankCode) as bankDesc
+                FROM(
+                	SELECT
+                		'-1' as supportId,
+                		id as subscriptionId, 
+                		customerId,
+                		publicationId,
+                		cnt,
+                		pYear,
+                		pMonth,
+                		'' as sYear,
+                		'' as sMonth,
+                		eYear,
+                		eMonth,
+                		`type` as productType,
+                		totalprice,
+                		subType,
+                		'' as supType,
+                		shippingType,
+                		rName,
+                		'' as rEmail,
+                		rPhone,
+                		rZipCode,
+                		rAddr,
+                		rAddrDetail,
+                		paymentId,
+                		'' as assemblyName,
+       					deliveryStatus,
+       					regDate
+                	FROM tblSubscription SUB
+                	UNION ALL
+                	SELECT
+                		id as supportId,
+                		'-1' as subscriptionId, 
+                		customerId,
+                		'-1' as publicationId,
+                		'' as cnt,
+                		'' as pYear,
+                		'' as pMonth,
+                		sYear,
+                		sMonth,
+                		eYear,
+                		eMonth,
+                		`type` as productType,
+                		totalprice,
+                		'' as subType,
+                		supType,
+                		'-1' as shippingType,
+                		rName,
+                		rEmail,
+                		rPhone,
+                		'' as rZipCode,
+                		'' as rAddr,
+                		'' as rAddrDetail,
+                		paymentId,
+                		assemblyName,
+       					'-1' as deliveryStatus,
+       					regDate
+                	FROM tblSupport SUP
+                ) tmp JOIN tblCustomer C ON C.id = tmp.`customerId` 
+                LEFT JOIN tblPayment P ON P.id = tmp.`paymentId` 
+                LEFT JOIN tblPayMethod PM ON PM.id = P.`payMethodId`
+                LEFT JOIN tblPublication PUB ON PUB.id = tmp.publicationId
+                WHERE {$where}
+                ORDER BY tmp.regDate DESC;
+            ";
+
+            return $this->getArray($sql);
+        }
+
         function customerList(){
+            $orderBy = $_REQUEST["orderBy"];
+
+            if($orderBy == "") $orderBy = "regDate";
+            $orderByStmt = " ORDER BY {$orderBy} DESC";
+
             $searchType = $_REQUEST["searchType"];
             $searchText = $_REQUEST["searchText"];
             $where = "1=1";
@@ -95,7 +202,7 @@ if(!class_exists("Management")){
             $sql = "
                 SELECT *
                 FROM tblCustomer
-                WHERE `status` = 1 AND {$where}
+                WHERE `status` = 1 AND {$where} {$orderByStmt}
                 LIMIT {$this->startNum}, {$this->endNum};
             ";
             return $this->getArray($sql);
@@ -132,7 +239,8 @@ if(!class_exists("Management")){
                   S.*, PM.info, PM.type as pmType, 
                   (SELECT `name` FROM tblPublicationLang PL WHERE PL.publicationId = publicationId AND langCode = '{$userInfo["langCode"]}' LIMIT 1) publicationName,
                   (SELECT COUNT(*) FROM tblShipping S WHERE S.subsciptionId = id) lostCnt,
-                  P.paymentResult
+                  P.paymentResult,
+                  P.id as idx
                 FROM tblSubscription S LEFT JOIN tblPayment P ON S.paymentId = P.id  LEFT JOIN tblPayMethod PM ON PM.id = P.payMethodId
                 WHERE S.customerId = '{$id}' 
                 ORDER BY S.regDate DESC
@@ -140,7 +248,7 @@ if(!class_exists("Management")){
             $subscriptionInfo = $this->getArray($sql);
 
             $sql = "
-                SELECT S.*, PM.info, PM.type as pmType, (SELECT `desc` FROM tblNationGroup WHERE `id` = (SELECT nationId FROM tblSupportParent WHERE `id` = S.parentId)) nation, P.paymentResult
+                SELECT S.*, PM.info, PM.type as pmType, (SELECT `desc` FROM tblNationGroup WHERE `id` = (SELECT nationId FROM tblSupportParent WHERE `id` = S.parentId)) nation, P.paymentResult, P.id as idx
                 FROM tblSupport S LEFT JOIN tblPayment P ON S.paymentId = P.id LEFT JOIN tblPayMethod PM ON PM.id = P.payMethodId
                 WHERE S.customerId = '{$id}'
                 ORDER BY S.regDate DESC
@@ -184,7 +292,7 @@ if(!class_exists("Management")){
             if($_REQUEST["cnt"] < 10)
                 $totalPrice = $publication["price"] * $_REQUEST["cnt"];
             else
-                $totalPrice = $publication["discounted"] * $_REQUEST["cnt"];
+                $totalPrice = $publication["discounted"] * $_REQUEST["cnt"] + 3000;
 
             $sql = "SELECT rName, rPhone, rZipCode, rAddr, rAddrDetail, publicationId, cnt, subType, shippingType, pYear, pMonth, eYear, eMonth, deliveryStatus FROM tblSubscription WHERE id='{$id}' LIMIT 1";
             $old = $this->getRow($sql);
