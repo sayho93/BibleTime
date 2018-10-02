@@ -883,7 +883,8 @@ if(!class_exists("Management")){
         function shippingList($type){
             $sql = "
                 SELECT 
-                  S.*, 
+                  S.*,
+                  (SELECT email FROM tblCustomer WHERE id = S.customerId) email, 
                   (SELECT `desc` FROM tblPublication WHERE id = S.publicationId) publicationName,
                   (SELECT COUNT(*) FROM tblShipping WHERE subsciptionId = S.subsciptionId) lostCnt,
                   SUB.pYear,

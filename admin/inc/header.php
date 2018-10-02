@@ -202,7 +202,7 @@ if($userInfo->id < 0 || $userInfo->id == ""){
                 <h6 class="dropdown-header">고객 관리</h6>
                 <a class="dropdown-item" href="/admin/pages/customerManage/customerList.php">고객정보</a>
                 <?if($userInfo->auth >= 2){?>
-                <a class="dropdown-item" href="/admin/pages/customerManage/failedPurchase.php?type=BA">결제관리</a>
+                <a class="dropdown-item" href="/admin/pages/customerManage/failedPurchase.php?year=<?=intval(date("Y"))?>&month=<?=date("m")?>&type=BA">결제관리</a>
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header">발송</h6>
                 <a class="dropdown-item" href="/admin/pages/customerManage/kakaoList.php">카톡 발송 현황</a>

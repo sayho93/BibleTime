@@ -139,12 +139,15 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
+                <th>이메일</th>
                 <th>이름</th>
                 <th>연락처</th>
                 <th>주소</th>
                 <th>우편번호</th>
                 <th>품명</th>
                 <th>수량</th>
+                <th>월호-년도</th>
+                <th>월호-월</th>
                 <th>담당자</th>
                 <th>유형</th>
                 <th>배송사고 이력</th>
@@ -153,12 +156,15 @@
             <tbody class="jType0">
             <?foreach($list0 as $item0){?>
                 <tr>
+                    <td><?=$item0["email"]?></td>
                     <td><?=$item0["rName"]?></td>
                     <td style='mso-number-format:"\@"'><?=$item0["phone"]?></td>
                     <td><?=$item0["addr"] . $item0["addrDetail"]?></td>
                     <td><?=$item0["zipcode"]?></td>
                     <td><?=$item0["publicationName"]?></td>
                     <td><?=$item0["cnt"]?></td>
+                    <td><?=$item0["pYear"]?></td>
+                    <td><?=$item0["pMonth"]?></td>
                     <td><?=$item0["manager"]?></td>
                     <td><?=$item0["type"] == "0" ? "신규배송" : "재배송"?></td>
                     <td>
@@ -174,12 +180,15 @@
             <tbody class="jType1" style="display: none;">
             <?foreach($list1 as $item1){?>
                 <tr>
+                    <td><?=$item1["email"]?></td>
                     <td><?=$item1["rName"]?></td>
                     <td style='mso-number-format:"\@"'><?=$item1["phone"]?></td>
                     <td><?=$item1["addr"] . $item1["addrDetail"]?></td>
                     <td><?=$item1["zipcode"]?></td>
                     <td><?=$item1["publicationName"]?></td>
                     <td><?=$item1["cnt"]?></td>
+                    <td><?=$item1["pYear"]?></td>
+                    <td><?=$item1["pMonth"]?></td>
                     <td><?=$item1["manager"]?></td>
                     <td><?=$item1["type"] == "0" ? "신규배송" : "재배송"?></td>
                     <td>
