@@ -236,7 +236,7 @@ if($totalLiteral == "") $totalLiteral = "영";
             });
 
             $(".jClose").click(function(){
-                updateFormJson(JSON.stringify(formJson), currentId);
+                window.close();
             });
 
             $(".jDownload").click(function(){
@@ -603,7 +603,6 @@ if($totalLiteral == "") $totalLiteral = "영";
 
 <div style="position:absolute; right:0; padding: 20px;">
 <a href="#" class="jPrint jRounded" >인쇄</a>
-<a href="#" class="jModify jRounded" >입력/수정</a>
 <a href="#" class="jDownload jRounded" >다운로드</a>
 <a href="#" class="jClose jRounded" >닫기</a>
 </div>

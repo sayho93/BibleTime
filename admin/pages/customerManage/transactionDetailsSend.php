@@ -113,6 +113,11 @@
 
         var globalCnt = 0;
 
+        $(".jCAll").change(function(){
+            var isC = $(this).prop("checked");
+            $(".scheck").prop("checked", isC);
+        });
+
         $(".jEmail").click(function(){
             var arr = $(".scheck:checked");
             if(arr.length <= 0){
@@ -191,7 +196,7 @@
         <table border=1 class="table table-bordered" id="toPrint">
             <thead>
             <tr>
-                <th width="20px">-</th>
+                <th width="20px"><input class="form-control-sm jCAll" type="checkbox" /></th>
                 <th width="25px">No.</th>
                 <th>거래처명</th>
                 <th>품명 및 규격</th>

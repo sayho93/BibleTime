@@ -37,7 +37,20 @@ if(!class_exists("Management")){
 
             $where = "WHERE 1=1";
             $where = $this->appendByReq($where, "email", "AND `email` LIKE '%{$_REQUEST["email"]}%'");
-            $where = $this->appendByReq($where, "phone", "AND `phone` LIKE '%{$_REQUEST["phone"]}%'");
+            $where = $this->appendByReq($where, "phone", "
+            AND (`phone` LIKE '%{$_REQUEST["phone"]}%') OR 
+            tblCustomer.`id` IN (SELECT customerId FROM 
+            ((SELECT customerId FROM tblSubscription WHERE rPhone LIKE '%{$_REQUEST["phone"]}%') UNION
+            (SELECT customerId FROM tblSupport WHERE rPhone LIKE '%{$_REQUEST["phone"]}%')) tempIds)");
+
+            $where = $this->appendByReq($where, "commercial1", "AND `commercial1`=1");
+            $where = $this->appendByReq($where, "commercial2", "AND `commercial2`=1");
+            $where = $this->appendByReq($where, "commercial3", "AND `commercial3`=1");
+            $where = $this->appendByReq($where, "commercial4", "AND `commercial4`=1");
+
+            $where = $this->appendByReq($where, "paymentResult", "AND tblCustomer.`id` IN (SELECT customerId FROM tblPayment P JOIN tblPayMethod M ON P.payMethodId=M.`id` WHERE paymentResult='{$_REQUEST["paymentResult"]}')");
+            $where = $this->appendByReq($where, "payType", "AND tblCustomer.`id` IN (SELECT customerId FROM tblPayment P JOIN tblPayMethod M ON P.payMethodId=M.`id` WHERE P.`type`='{$_REQUEST["payType"]}')");
+
             $where = $this->appendByReq($where, "name", "AND `name` LIKE '%{$_REQUEST["name"]}%'");
             $where = $this->appendByReq($where, "code", "AND tblCustomer.`id` IN (SELECT (SELECT customerId FROM tblPayMethod WHERE tblPayMethod.`id`=`payMethodId`) AS cid FROM tblPayment WHERE `primeIndex` LIKE '%{$_REQUEST["code"]}%')");
             $where = $this->appendByReq($where, "sMethod", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `subType` = '{$_REQUEST["sMethod"]}')");
@@ -96,6 +109,10 @@ if(!class_exists("Management")){
             $sql = "
                 SELECT 
                   *,
+                  C.commercial1,
+                  C.commercial2,
+                  C.commercial3,
+                  C.commercial4,
                   C.type as customerType,
                   PM.type as paymentType,
                   (SELECT `desc` FROM tblCardType WHERE `id` = cardTypeId) as cardDesc,
@@ -127,7 +144,8 @@ if(!class_exists("Management")){
                 		paymentId,
                 		'' as assemblyName,
        					deliveryStatus,
-       					regDate
+       					regDate,
+       					regDate pRegDate
                 	FROM tblSubscription SUB
                 	UNION ALL
                 	SELECT
@@ -156,7 +174,8 @@ if(!class_exists("Management")){
                 		paymentId,
                 		assemblyName,
        					'-1' as deliveryStatus,
-       					regDate
+       					regDate,
+       					regDate pRegDate
                 	FROM tblSupport SUP
                 ) tmp JOIN tblCustomer C ON C.id = tmp.`customerId` 
                 LEFT JOIN tblPayment P ON P.id = tmp.`paymentId` 
@@ -883,8 +902,7 @@ if(!class_exists("Management")){
         function shippingList($type){
             $sql = "
                 SELECT 
-                  S.*,
-                  (SELECT email FROM tblCustomer WHERE id = S.customerId) email, 
+                  S.*, 
                   (SELECT `desc` FROM tblPublication WHERE id = S.publicationId) publicationName,
                   (SELECT COUNT(*) FROM tblShipping WHERE subsciptionId = S.subsciptionId) lostCnt,
                   SUB.pYear,
@@ -1091,6 +1109,10 @@ if(!class_exists("Management")){
 
         function paymentList(){
             $type = $_REQUEST["type"];
+            $year = $_REQUEST["year"] == "" ? intval(date("Y")) : $_REQUEST["year"];
+            $month = $_REQUEST["month"] == "" ? date("m") : $_REQUEST["month"];
+
+            $rangeWhereStmt = " AND MONTH(P.regDate)='{$month}' AND YEAR(P.regDate)='{$year}'";
 
             $sql = "
                 SELECT 
@@ -1105,6 +1127,7 @@ if(!class_exists("Management")){
                 END AS totalPrice
                 FROM tblPayment P JOIN tblPayMethod PM ON P.payMethodId = PM.id JOIN tblCustomer C ON PM.customerId = C.id
                 WHERE P.type = '{$type}'
+                {$rangeWhereStmt}
                 ORDER BY P.regDate DESC
             ";
             $res = $this->getArray($sql);

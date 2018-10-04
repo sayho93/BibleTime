@@ -7,7 +7,7 @@
  */
 ?>
 
-<? include_once $_SERVER['DOCUMENT_ROOT']."/admin/inc/header.php"; ?>
+<? include_once $_SERVER['DOCUMENT_ROOT'] . "/admin/inc/header.php"; ?>
 <? include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/Management.php";?>
 <?
     $obj = new Management($_REQUEST);
@@ -21,7 +21,10 @@
     $(document).ready(function(){
         $(".jType").click(function(){
             var type = $(this).val();
-            location.href = "/admin/pages/customerManage/failedPurchase.php?type=" + type;
+            var year = "<?=$_REQUEST["year"] == "" ? intval(date("Y")) : $_REQUEST["year"]?>";
+            var month = "<?=$_REQUEST["month"] == "" ? date("m") : $_REQUEST["month"]?>";
+            location.href = "/admin/pages/customerManage/failedPurchase.php?type=" + type
+                + "&year=" + year + "&month=" + month;
         });
 
         $(document).on("click", ".jChange", function(e){
@@ -47,6 +50,20 @@
                 }
             })
         });
+
+        $("#jYear").change(function(){
+            changeRange();
+        });
+
+        $("#jMonth").change(function(){
+            changeRange();
+        });
+
+        function changeRange(){
+            var year = $("#jYear").val();
+            var month = $("#jMonth").val();
+            location.href = "/admin/pages/customerManage/failedPurchase.php?type=<?=$_REQUEST["type"]?>&year="+year+"&month=" + month;
+        }
 
         $(".jAlterExcel").click(exportExcel);
 
@@ -206,7 +223,7 @@
                             <td class="jView"><?=$item["primeIndex"]?></td>
                             <td class="jView"><?=$item["monthlyDate"]?></td>
                             <td class="jView"><?=$item["totalPrice"]?></td>
-                            <td class="jView"><?=$item["regDate"]?></td>
+                            <td class="jView"><?=$item["pRegDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){
@@ -296,7 +313,7 @@
                             <td class="jView"><?=$item["cardTypeId"]==-1 ? "" : $item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
                             <td class="jView"><?=$item["monthlyDate"]?></td>
                             <td class="jView"><?=$item["totalPrice"]?></td>
-                            <td class="jView"><?=$item["regDate"]?></td>
+                            <td class="jView"><?=$item["pRegDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){
@@ -384,7 +401,7 @@
                             <td class="jView"><?=$item["validThruMonth"] . " / " . $item["validThruYear"]?></td>
                             <td class="jView"><?=$item["monthlyDate"]?></td>
                             <td class="jView"><?=$item["totalPrice"]?></td>
-                            <td class="jView"><?=$item["regDate"]?></td>
+                            <td class="jView"><?=$item["pRegDate"]?></td>
                             <td>
                                 <button type="button" class="btn btn-sm <?
                                 switch($item["paymentResult"]){
@@ -456,4 +473,4 @@
 </div>
 
 
-<? include_once $_SERVER['DOCUMENT_ROOT']."/admin/inc/footer.php"; ?>
+<? include_once $_SERVER['DOCUMENT_ROOT'] . "/admin/inc/footer.php"; ?>

@@ -7,7 +7,7 @@
  */
 ?>
 
-<? include_once $_SERVER['DOCUMENT_ROOT']."/admin/inc/header.php"; ?>
+<? include_once $_SERVER['DOCUMENT_ROOT'] . "/admin/inc/header.php"; ?>
 <? include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/AdminMain.php";?>
 <? include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/Management.php";?>
 <?
@@ -64,6 +64,54 @@
                     }
                 })
             }
+        });
+
+        function exportToExcel(htmls){
+
+            var uri = 'data:application/vnd.ms-excel;base64,';
+            var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta charset="utf-8"></head><body><table>{table}</table></body></html>';
+            var base64 = function(s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            };
+
+            var format = function(s, c) {
+                return s.replace(/{(\w+)}/g, function(m, p) {
+                    return c[p];
+                })
+            };
+
+//            htmls = "YOUR HTML AS TABLE"
+
+            var ctx = {
+                worksheet : 'Worksheet',
+                table : htmls
+            };
+
+            var isIE = false;
+            if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0 || window.navigator.userAgent.indexOf("Edge") > -1) {
+                isIE = true;
+            }
+            var link = document.createElement("a");
+            link.download = "해외진행현황.xls";
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+
+            // window.close();
+        }
+
+        $(".jDownExcel").click(function(){
+            $.ajax({
+                url : "/admin/pages/customerManage/foreignStatusExcel.php?year=<?=$_REQUEST["year"]?>",
+                async : true,
+                type : "get",
+                dataType : "html",
+                success : function(data){
+                    exportToExcel(data);
+                },
+                error : function(){
+                    alert("데이터를 불러오는 중 오류가 발생했습니다.");
+                }
+            });
         });
 
     });
@@ -166,7 +214,7 @@
             </form>
         </div>
         <div class="btn-group float-right mb-2" role="group">
-<!--            <button type="button" class="btn btn-secondary mr-2">Excel</button>-->
+            <button type="button" class="btn btn-secondary jDownExcel mr-1">Excel</button>
             <button type="button" class="btn btn-secondary jAdd">추가</button>
         </div>
 
@@ -214,4 +262,4 @@
     </div>
 </div>
 
-<? include_once $_SERVER['DOCUMENT_ROOT']."/admin/inc/footer.php"; ?>
+<? include_once $_SERVER['DOCUMENT_ROOT'] . "/admin/inc/footer.php"; ?>

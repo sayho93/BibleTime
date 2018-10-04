@@ -49,6 +49,10 @@ if($_REQUEST["isDetail"] == "true"){
         <th>은행</th>
         <th>카드/계좌번호</th>
         <th>카드 유효월</th>
+        <th>광고1도</th>
+        <th>광고2도</th>
+        <th>광고3도</th>
+        <th>광고4도</th>
     </tr>
     <?for($i = 0; $i < sizeof($list); $i++){
         $item = $list[$i];
@@ -92,7 +96,7 @@ if($_REQUEST["isDetail"] == "true"){
         <td><?=$item["rZipCode"]?></td>
         <td><?=$item["rAddr"] . " " . $item["rAddrDetail"]?></td>
         <td><?=$item["assemblyName"]?></td>
-        <td><?=$item["regDate"]?></td>
+        <td><?=$item["pRegDate"]?></td>
         <td><?=$item["email"]?></td>
         <td><?=$item["customerType"] == 1 ? "개인" : "단체"?></td>
         <td>
@@ -110,6 +114,10 @@ if($_REQUEST["isDetail"] == "true"){
         <td><?=$item["bankDesc"]?></td>
         <td style='mso-number-format:"\@"'><?=$item["info"]?></td>
         <td><?=$item["validThruMonth"] . "/" . $item["validThruYear"]?></td>
+        <td><?=$item["commercial1"] == "1" ? "O" : "X"?></td>
+        <td><?=$item["commercial2"] == "1" ? "O" : "X"?></td>
+        <td><?=$item["commercial3"] == "1" ? "O" : "X"?></td>
+        <td><?=$item["commercial4"] == "1" ? "O" : "X"?></td>
 
     </tr>
     <?}?>

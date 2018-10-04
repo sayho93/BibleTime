@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="953164ab-ba23-43a2-afe9-6d67381cac5b" name="Default" comment="stockList added">
-      <change beforePath="$PROJECT_DIR$/admin/inc/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/inc/header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/pages/shipping/today.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/shipping/today.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/customerExcel.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/customerExcel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/customerSearch.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/customerSearch.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/failedPurchase.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/failedPurchase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/foreignStatus.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/foreignStatus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailsSend.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailsSend.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/writable/order_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/writable/order_template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/writable/receipt_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/writable/receipt_template.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/classes/Management.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/classes/Management.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -177,8 +182,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/admin/pages/shipping/today.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="186" column="51" lean-forward="true" selection-start-line="186" selection-start-column="51" selection-end-line="186" selection-end-column="51" />
+            <state relative-caret-position="617">
+              <caret line="186" column="51" selection-start-line="186" selection-start-column="51" selection-end-line="186" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -186,8 +191,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/common/classes/Management.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="891" column="28" lean-forward="true" selection-start-line="891" selection-start-column="28" selection-end-line="891" selection-end-column="28" />
+            <state relative-caret-position="586">
+              <caret line="909" column="28" selection-start-line="909" selection-start-column="28" selection-end-line="909" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -552,12 +557,12 @@
       <workItem from="1538112887406" duration="15000" />
       <workItem from="1538112943442" duration="15527000" />
       <workItem from="1538363389780" duration="15563000" />
-      <workItem from="1538456976919" duration="6380000" />
+      <workItem from="1538456976919" duration="6645000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="477364000" />
+    <option name="totallyTimeSpent" value="477629000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -934,15 +939,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/common/classes/Management.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="891" column="28" lean-forward="true" selection-start-line="891" selection-start-column="28" selection-end-line="891" selection-end-column="28" />
+        <state relative-caret-position="586">
+          <caret line="909" column="28" selection-start-line="909" selection-start-column="28" selection-end-line="909" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/admin/pages/shipping/today.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="186" column="51" lean-forward="true" selection-start-line="186" selection-start-column="51" selection-end-line="186" selection-end-column="51" />
+        <state relative-caret-position="617">
+          <caret line="186" column="51" selection-start-line="186" selection-start-column="51" selection-end-line="186" selection-end-column="51" />
         </state>
       </provider>
     </entry>

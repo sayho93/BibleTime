@@ -207,8 +207,32 @@ $pubList = $main->publicationList();
                                 <option value="1" <?=$_REQUEST["shippingType"] == "1" ? "SELECTED" : ""?>>택배</option>
                             </select>
                         </td>
-                        <th></th>
+                        <th>결제상태</th>
                         <td colspan="2">
+                            <select class="custom-select" name="paymentResult">
+                                <option value="" >전체</option>
+                                <option value="0" <?=$_REQUEST["paymentResult"] == "0" ? "SELECTED" : ""?>>미결제</option>
+                                <option value="1" <?=$_REQUEST["paymentResult"] == "1" ? "SELECTED" : ""?>>완료</option>
+                                <option value="2" <?=$_REQUEST["paymentResult"] == "2" ? "SELECTED" : ""?>>처리중</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>결제유형</th>
+                        <td colspan="2">
+                            <select class="custom-select" name="payType">
+                                <option value="" >전체</option>
+                                <option value="BA" <?=$_REQUEST["payType"] == "BA" ? "SELECTED" : ""?>>자동이체</option>
+                                <option value="FC" <?=$_REQUEST["payType"] == "FC" ? "SELECTED" : ""?>>해외카드</option>
+                                <option value="CC" <?=$_REQUEST["payType"] == "CC" ? "SELECTED" : ""?>>직접관리</option>
+                            </select>
+                        </td>
+                        <th>광고</th>
+                        <td colspan="2">
+                            1도&nbsp;<input type="checkbox" name="commercial1" <?=$_REQUEST["commercial1"] == "on" ? "CHECKED" : "" ?> />&nbsp;
+                            2도&nbsp;<input type="checkbox" name="commercial2" <?=$_REQUEST["commercial2"] == "on" ? "CHECKED" : "" ?> />&nbsp;
+                            3도&nbsp;<input type="checkbox" name="commercial3" <?=$_REQUEST["commercial3"] == "on" ? "CHECKED" : "" ?> />&nbsp;
+                            4도&nbsp;<input type="checkbox" name="commercial4" <?=$_REQUEST["commercial4"] == "on" ? "CHECKED" : "" ?> />
                         </td>
                     </tr>
                     </tbody>

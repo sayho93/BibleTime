@@ -51,7 +51,7 @@ $formJson = $formData["formJson"];
             }
 
             #toPrint {
-                margin: 5mm 10mm 8mm 10mm;
+                /*margin: 5mm 10mm 8mm 10mm;*/
                 border: initial;
                 border-radius: initial;
                 width: initial;
