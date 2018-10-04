@@ -114,7 +114,7 @@ if(!class_exists("Uncallable")){
                     (SELECT `name` FROM tblCustomer WHERE `id`=customerId) AS cuName,
                     (SELECT `phone` FROM tblCustomer WHERE `id`=customerId) AS cuPhone,
                     (SELECT CONCAT(addr, ' ', addrDetail) FROM tblCustomer WHERE `id`=customerId) AS fAddr  
-                    FROM tblSubscription WHERE customerId='{$id}' GROUP BY publicationId ORDER BY publicationId";
+                    FROM tblSubscription WHERE customerId='{$id}' AND (SELECT paymentResult FROM tblPayment PP WHERE PP.`id`=paymentId) = 1 GROUP BY publicationId ORDER BY publicationId";
             return $this->getArray($sql);
         }
 

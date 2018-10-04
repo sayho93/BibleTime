@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="953164ab-ba23-43a2-afe9-6d67381cac5b" name="Default" comment="test">
-      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailView.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailsSend.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pages/customerManage/transactionDetailsSend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/writable/receipt_template.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/writable/receipt_template.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/classes/Uncallable.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/classes/Uncallable.php" afterDir="false" />
-    </list>
+    <list default="true" id="953164ab-ba23-43a2-afe9-6d67381cac5b" name="Default" comment="merged" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +70,7 @@
     <session id="1339674168">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.10" value="3" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.12" value="5" />
@@ -113,7 +108,7 @@
         <counts>
           <entry key="css" value="209" />
           <entry key="php" value="56468" />
-          <entry key="txt" value="4" />
+          <entry key="txt" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -121,7 +116,7 @@
           <entry key="CSS" value="209" />
           <entry key="HTML" value="1" />
           <entry key="PHP" value="56033" />
-          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="PLAIN_TEXT" value="12" />
           <entry key="SQL" value="434" />
         </counts>
       </usages-collector>
@@ -187,8 +182,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/admin/pages/customerManage/customerDetail.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-251">
-              <caret line="259" column="58" lean-forward="true" selection-start-line="259" selection-start-column="58" selection-end-line="259" selection-end-column="58" />
+            <state relative-caret-position="484">
+              <caret line="308" column="21" lean-forward="true" selection-start-line="308" selection-start-column="21" selection-end-line="308" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -580,7 +575,7 @@
       <workItem from="1538112887406" duration="15000" />
       <workItem from="1538112943442" duration="15527000" />
       <workItem from="1538363389780" duration="15563000" />
-      <workItem from="1538456976919" duration="11525000" />
+      <workItem from="1538456976919" duration="11630000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1538636557537</created>
@@ -589,14 +584,22 @@
       <option name="project" value="LOCAL" />
       <updated>1538636557537</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="merged">
+      <created>1538637408050</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1538637408050</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="482509000" />
+    <option name="totallyTimeSpent" value="482614000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19791667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -630,7 +633,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="stockList added" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="merged" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/modules/ajaxCall/ajaxClass.js">
@@ -977,8 +981,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/admin/pages/customerManage/customerDetail.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="259" column="58" lean-forward="true" selection-start-line="259" selection-start-column="58" selection-end-line="259" selection-end-column="58" />
+        <state relative-caret-position="484">
+          <caret line="308" column="21" lean-forward="true" selection-start-line="308" selection-start-column="21" selection-end-line="308" selection-end-column="21" />
         </state>
       </provider>
     </entry>
