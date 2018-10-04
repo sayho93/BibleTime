@@ -2,7 +2,7 @@
 <? include $_SERVER["DOCUMENT_ROOT"] . "/common/classes/Uncallable.php";?>
 <?
     $obj = new Uncallable($_REQUEST);
-    $list = $obj->getTransList();
+    $list = $obj->getNewTransList();
 ?>
 
 <script>
@@ -200,7 +200,8 @@
                 <th width="25px">No.</th>
                 <th>거래처명</th>
                 <th>품명 및 규격</th>
-                <th>금액</th>
+                <th>거래금액합계</th>
+                <th>묶음배송포함</th>
                 <th>비고</th>
                 <th width="130px">-</th>
             </tr>
@@ -211,16 +212,16 @@
             foreach($list as $item){?>
                 <tr>
                     <td>
-                        <input class="form-control-sm scheck" type="checkbox" sid="<?=$item["id"]?>" email="<?=$item["pEmail"]?>" />
+                        <input class="form-control-sm scheck" type="checkbox" sid="<?=$item["id"]?>" email="<?=$item["email"]?>" />
                     </td>
                     <td><?=$vnum--?></td>
-                    <td><?=$item["rName"]?></td>
-                    <td><?=$item["pbName"]?></td>
+                    <td><?=$item["name"]?></td>
+                    <td><?=$item["pNames"]?></td>
                     <td><?=$item["totalPrice"]?></td>
+                    <td><?=$item["isBundle"] == "1" ? "O" : "X"?></td>
                     <?
                         $tempCursor = 0;
                         $tempArr = array();
-                    if($item["subType"] == "2") $tempArr[$tempCursor++] = "묶음배송";
                     if($item["cm"][0] == "1") $tempArr[$tempCursor++] = "1도";
                     if($item["cm"][1] == "1") $tempArr[$tempCursor++] = "2도";
                     if($item["cm"][2] == "1") $tempArr[$tempCursor++] = "3도";

@@ -12,7 +12,7 @@ $static_phone = $uc->getProperty("STATIC_R_PHONE");
 $static_name = $uc->getProperty("STATIC_R_NAME");
 $static_account = $uc->getProperty("STATIC_R_ACCOUNT");
 
-$subscribe = $uc->getSub();
+$subscribe = $uc->getNewSub();
 
 if($_REQUEST["id"] == ""){
     echo "<script>alert('비정상적인 접근입니다.'); window.close();</script>";
@@ -23,13 +23,15 @@ $formJson = $formData["formJson"];
 $F_VALUE = json_decode(preg_replace('/[\x00-\x1F\x7F]/', '', $formJson), true);
 
 if($formJson == ""){
-    $F_VALUE[0]["date"] = $subscribe["ftd"];
-    $F_VALUE[0]["name"] = $subscribe["puName"]."(배송료포함)";
-    $F_VALUE[0]["quantity"] = $subscribe["cnt"];
-    $F_VALUE[0]["price"] = $subscribe["unitPrice"];
-    $F_VALUE[0]["supply"] = intval($subscribe["totalPrice"]);
-    $F_VALUE[0]["vat"] = $subscribe["pMonth"]."월호";
-    for($www = 1; $www < 12; $www++){
+    for($e = 0; $e < sizeof($subscribe); $e++){
+        $F_VALUE[$e]["date"] = $subscribe[$e]["ftd"];
+        $F_VALUE[$e]["name"] = $subscribe[$e]["puName"]."(배송료포함)";
+        $F_VALUE[$e]["quantity"] = $subscribe[$e]["totalCnt"];
+        $F_VALUE[$e]["price"] = $subscribe[$e]["unitPrice"];
+        $F_VALUE[$e]["supply"] = intval($subscribe[$e]["realTotal"]);
+        $F_VALUE[$e]["vat"] = $subscribe[$e]["pMonth"]."월호";
+    }
+    for($www = sizeof($subscribe); $www < 12; $www++){
         $F_VALUE[$www]["date"] = "";
         $F_VALUE[$www]["name"] = "";
         $F_VALUE[$www]["quantity"] = "";

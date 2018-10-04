@@ -12,7 +12,7 @@
 <?
 
     $uc = new Uncallable($_REQUEST);
-    $subscribe = $uc->getSub();
+    $subscribe = $uc->getNewSub();
     $formData = $uc->getReceipt();
     $formJson = $formData["formJson"];
 
@@ -27,15 +27,16 @@
     $F_VALUE = json_decode(preg_replace('/[\x00-\x1F\x7F]/', '', $formJson), true);
 
     if($flag){
-        $F_VALUE[0]["date"] = $subscribe["ftd"];
-        $F_VALUE[0]["name"] = $subscribe["puName"]."(배송료포함)";
-        $F_VALUE[0]["quantity"] = $subscribe["cnt"];
-        $F_VALUE[0]["price"] = $subscribe["unitPrice"];
-        $F_VALUE[0]["supply"] = intval($subscribe["totalPrice"]);
-        $F_VALUE[0]["vat"] = $subscribe["pMonth"]."월호";
+        for($e = 0; $e < sizeof($subscribe); $e++){
+            $F_VALUE[$e]["date"] = $subscribe[$e]["ftd"];
+            $F_VALUE[$e]["name"] = $subscribe[$e]["puName"]."(배송료포함)";
+            $F_VALUE[$e]["quantity"] = $subscribe[$e]["totalCnt"];
+            $F_VALUE[$e]["price"] = $subscribe[$e]["unitPrice"];
+            $F_VALUE[$e]["supply"] = intval($subscribe[$e]["realTotal"]);
+            $F_VALUE[$e]["vat"] = $subscribe[$e]["pMonth"]."월호";
+        }
     }
 
-    $subscribe["puName"];
 ?>
 
 <link rel="stylesheet" href="/admin/scss/smSheet.css">
@@ -147,17 +148,19 @@
             </tr>
             </thead>
             <tbody>
+            <?for($e = 0; $e < sizeof($subscribe); $e++){?>
             <tr>
-                <td ><?=$subscribe["rName"]?></td>
-                <td ><?=$subscribe["rPhone"]?></td>
-                <td ><?=$subscribe["rZipCode"]?></td>
-                <td ><?=$subscribe["rAddr"]." ".$subscribe["rAddrDetail"]?></td>
-                <td ><?=$subscribe["puName"]?></td>
-                <td ><?=$subscribe["cnt"]?></td>
-                <td ><?=$subscribe["regDate"]?></td>
-                <td ><?=$subscribe["pYear"]."-".$subscribe["pMonth"]?></td>
-                <td ><?=$subscribe["eYear"]."-".$subscribe["eMonth"]?></td>
+                <td ><?=$subscribe[$e]["rName"]?></td>
+                <td ><?=$subscribe[$e]["rPhone"]?></td>
+                <td ><?=$subscribe[$e]["rZipCode"]?></td>
+                <td ><?=$subscribe[$e]["rAddr"]." ".$subscribe[$e]["rAddrDetail"]?></td>
+                <td ><?=$subscribe[$e]["puName"]?></td>
+                <td ><?=$subscribe[$e]["totalCnt"]?></td>
+                <td ><?=$subscribe[$e]["regDate"]?></td>
+                <td ><?=$subscribe[$e]["pYear"]."-".$subscribe[$e]["pMonth"]?></td>
+                <td ><?=$subscribe[$e]["eYear"]."-".$subscribe[$e]["eMonth"]?></td>
             </tr>
+            <?}?>
             </tbody>
         </table>
 

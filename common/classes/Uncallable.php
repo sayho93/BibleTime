@@ -103,6 +103,21 @@ if(!class_exists("Uncallable")){
             return $this->getRow($sql);
         }
 
+        function getNewSub(){
+            $id = $_REQUEST["id"];
+            $sql = "SELECT *,
+                    DATE_FORMAT(`regDate`,'%m/%d') AS ftd,
+                    SUM(cnt) AS totalCnt,
+                    SUM(totalPrice) AS realTotal,
+                    (SELECT `desc` FROM tblPublication WHERE `id`=publicationId) AS puName,
+                    (SELECT price FROM tblPublicationLang WHERE tblPublicationLang.publicationId=tblSubscription.publicationId AND langCode='kr') AS unitPrice,
+                    (SELECT `name` FROM tblCustomer WHERE `id`=customerId) AS cuName,
+                    (SELECT `phone` FROM tblCustomer WHERE `id`=customerId) AS cuPhone,
+                    (SELECT CONCAT(addr, ' ', addrDetail) FROM tblCustomer WHERE `id`=customerId) AS fAddr  
+                    FROM tblSubscription WHERE customerId='{$id}' GROUP BY publicationId ORDER BY publicationId";
+            return $this->getArray($sql);
+        }
+
         function getOverviews(){
             $sql = "
             SELECT
@@ -516,7 +531,46 @@ if(!class_exists("Uncallable")){
             return $this->getArray($sql);
         }
 
+        function getNewTransList(){
+            $this->initPage();
+//            $where = "WHERE DATE_FORMAT(`regDate`,'%Y-%m') = '{$_REQUEST["year"]}-{$_REQUEST["month"]}'";
+            $where = "WHERE DATE('{$_REQUEST["year"]}-{$_REQUEST["month"]}-01') 
+                        BETWEEN DATE(CONCAT(`pYear`,'-',`pMonth`,'-01')) 
+                        AND DATE(IFNULL(LAST_DAY(DATE(CONCAT(`eYear`,'-',`eMonth`,'-01'))), DATE('2999-12-31')))";
 
+//            if($_REQUEST["type"] != "-1"){
+//                $where .= " AND `subType`='{$_REQUEST["type"]}'";
+//            }
+            if($_REQUEST["type"] != "-1"){
+                $where .= " AND (SELECT `type` FROM tblCustomer WHERE `id`=customerId) = '{$_REQUEST["type"]}'";
+            }
+
+            $sqlNum = "SELECT 
+                    COUNT(*) AS rn
+                    FROM tblCustomer C
+                    WHERE `id` IN (SELECT
+                    customerId
+                    FROM tblSubscription {$where}
+                    ) ";
+            $this->rownum = $this->getValue($sqlNum, "rn");
+            $this->setPageMassive($this->rownum);
+            $sql = "
+                    SELECT 
+                    *, 
+                    CONCAT(commercial1, commercial2, commercial3, commercial4) AS cm,
+                    (SELECT SUM(totalPrice) FROM tblSubscription WHERE customerId=C.`id`) AS totalPrice,
+                    (SELECT COUNT(*) > 0 FROM tblSubscription WHERE customerId=C.`id` AND subType=2) AS isBundle,
+                    (SELECT GROUP_CONCAT(DISTINCT P.`desc` SEPARATOR ', ') FROM tblSubscription JOIN tblPublication P ON publicationId=P.`id` WHERE customerId=C.`id`) AS pNames
+                    FROM tblCustomer C
+                    WHERE `id` IN (SELECT
+                    customerId
+                    FROM tblSubscription {$where}
+                    ) 
+                    ORDER BY regDate DESC LIMIT {$this->startNum}, {$this->endNum}
+            ";
+
+            return $this->getArray($sql);
+        }
         
         function sendTrans(){
             $body = $_REQUEST["content"];
