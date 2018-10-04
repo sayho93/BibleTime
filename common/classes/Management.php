@@ -1169,6 +1169,7 @@ if(!class_exists("Management")){
             $res = $_REQUEST["res"];
             $sql = "
                 UPDATE tblPayment SET paymentResult = '{$res}' WHERE `id` = '{$id}'";
+
             $this->update($sql);
             return $this->makeResultJson(1, "succ");
         }

@@ -265,8 +265,9 @@ if(!class_exists("ExcelParser")){
 
                 $data = array();
 
-                for ($i = 2 ; $i <= $maxRow ; $i++) {
+                for ($i = 2 ; $i <= $maxRow ; $i++){
                     $email = $objWorksheet->getCell('D' . $i)->getValue();
+//                    echo $email;
 
                     $sql = "
                         SELECT * FROM tblCustomer WHERE email = '{$email}' LIMIT 1
@@ -306,6 +307,7 @@ if(!class_exists("ExcelParser")){
                         $this->update($sql);
                         $customerId = $this->mysql_insert_id();
                     }
+
                     $cardType = $objWorksheet->getCell("K" . $i)->getValue();
                     $bankCode = $objWorksheet->getCell("L" . $i)->getValue();
                     $owner = $objWorksheet->getCell("M" . $i)->getValue();
@@ -314,6 +316,30 @@ if(!class_exists("ExcelParser")){
                     $validThruMonth = $objWorksheet->getCell("P" . $i)->getValue();
                     $buyType = $objWorksheet->getCell("Q" . $i)->getValue();
                     $monthlyDate = $objWorksheet->getCell("R" . $i)->getValue();
+
+                    $paymentResult = $objWorksheet->getCell("AH" . $i)->getValue();
+                    //TODO payResult UPDATE
+                    $sql = "
+                        SELECT *, P.id as target 
+                        FROM tblPayment P JOIN tblPayMethod PM ON P.payMethodId = PM.id
+                        WHERE PM.customerId = '{$customerId}' AND PM.info = '{$info}' AND (cardTypeId = '{$cardType}' OR bankCode = '{$bankCode}') 
+                    ";
+                    $res = $this->getArray($sql);
+//                    echo json_encode($res);
+                    if($res != "" && $res != null){
+//                        echo json_encode($res) . "\n\n";
+                        for($j=0; $j<sizeof($res); $j++){
+                            $sql = "
+                                UPDATE tblPayment
+                                SET paymentResult = '{$paymentResult}'
+                                WHERE id = '{$res[$j]["target"]}'
+                            ";
+                            $this->update($sql);
+                        }
+
+                        continue;
+                    }
+
                     //TODO payMethod INSERT
                     if($cardType == "") $cardType = -1;
                     $sql = "
@@ -333,7 +359,7 @@ if(!class_exists("ExcelParser")){
                     $this->update($sql);
                     $payMethodId = $this->mysql_insert_id();
 
-                    $paymentResult = $objWorksheet->getCell("AH" . $i)->getValue();
+
                     //TODO tblPayment INSERT
                     $sql = "
                         INSERT INTO tblPayment(payMethodId, buyType, `type`, monthlyDate, paymentResult, regDate)
