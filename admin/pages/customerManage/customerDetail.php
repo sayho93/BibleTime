@@ -327,7 +327,6 @@
         <div class="btn-group float-right mb-2" role="group" aria-label="Basic example">
             <button type="button" class="float-right btn btn-danger mr-1 jNoti" value="0" style="display: none;">문자/이메일 수신여부</button>
             <button type="button" class="float-right btn btn-primary mr-1 jNoti" value="1" style="display: none;">문자/이메일 수신여부</button>
-<!--            <button type="button" class="btn btn-secondary mr-2">결제 처리중</button>-->
             <button type="button" class="btn btn-secondary mr-1 jLost">LOST</button>
             <button type="button" class="btn btn-danger jDel" id="<?=$_REQUEST["id"]?>">삭제</button>
         </div>
