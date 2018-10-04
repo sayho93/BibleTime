@@ -1527,6 +1527,24 @@ if(!class_exists("Management")){
                 $this->update($sql);
             }
 
+            //TODO history INSERT
+            if($cardTypeId != -1) $sql = "SELECT `desc` FROM tblCardType WHERE id = '{$cardTypeId}'";
+            if($bankCode != "") $sql = "SELECT `desc` FROM tblBankType WHERE code = '{$bankCode}'";
+            $cbType = $this->getValue($sql, "desc");
+
+            $historyContent = "관리자 구독 신규 추가 - 결제금액: {$totalPrice} 배송지: {$rAddr} {$rAddrDetail} 카드사/은행: {$cbType} 카드번호/계좌번호: {$info}";
+            $sql = "
+                INSERT INTO tblCustomerHistory(customerId, modifier, type, content, regDate)
+                VALUES(
+                  '{$customerId}',
+                  '{$this->admUser->account}',
+                  'sub',
+                  '{$historyContent}',
+                  NOW()
+                ) 
+            ";
+            $this->update($sql);
+
             return $this->makeResultJson(1, "succ");
         }
 
@@ -1740,6 +1758,24 @@ if(!class_exists("Management")){
                   '{$sMonth}',
                   NOW()
                 )
+            ";
+            $this->update($sql);
+
+            //TODO history INSERT
+            if($cardTypeId != -1) $sql = "SELECT `desc` FROM tblCardType WHERE id = '{$cardTypeId}'";
+            if($bankCode != "") $sql = "SELECT `desc` FROM tblBankType WHERE code = '{$bankCode}'";
+            $cbType = $this->getValue($sql, "desc");
+
+            $historyContent = "관리자 후원 신규 추가 - 결제금액: {$totalPrice} 카드사/은행: {$cbType} 카드번호/계좌번호: {$info}";
+            $sql = "
+                INSERT INTO tblCustomerHistory(customerId, modifier, type, content, regDate)
+                VALUES(
+                  '{$customerId}',
+                  '{$this->admUser->account}',
+                  'sup',
+                  '{$historyContent}',
+                  NOW()
+                ) 
             ";
             $this->update($sql);
 
