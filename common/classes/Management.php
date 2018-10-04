@@ -51,7 +51,11 @@ if(!class_exists("Management")){
             $where = $this->appendByReq($where, "paymentResult", "AND tblCustomer.`id` IN (SELECT customerId FROM tblPayment P JOIN tblPayMethod M ON P.payMethodId=M.`id` WHERE paymentResult='{$_REQUEST["paymentResult"]}')");
             $where = $this->appendByReq($where, "payType", "AND tblCustomer.`id` IN (SELECT customerId FROM tblPayment P JOIN tblPayMethod M ON P.payMethodId=M.`id` WHERE P.`type`='{$_REQUEST["payType"]}')");
 
-            $where = $this->appendByReq($where, "name", "AND `name` LIKE '%{$_REQUEST["name"]}%'");
+            $where = $this->appendByReq($where, "name", "AND (`name` LIKE '%{$_REQUEST["name"]}%' OR tblCustomer.id IN(
+                SELECT customerId FROM tblSubscription WHERE rName LIKE '%{$_REQUEST["name"]}%'
+                UNION 
+                SELECT customerId FROM tblSubscription WHERE rName LIKE '%{$_REQUEST["name"]}%'
+            ))");
             $where = $this->appendByReq($where, "code", "AND tblCustomer.`id` IN (SELECT (SELECT customerId FROM tblPayMethod WHERE tblPayMethod.`id`=`payMethodId`) AS cid FROM tblPayment WHERE `primeIndex` LIKE '%{$_REQUEST["code"]}%')");
             $where = $this->appendByReq($where, "sMethod", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSubscription WHERE `subType` = '{$_REQUEST["sMethod"]}')");
             $where = $this->appendByReq($where, "sName", "AND tblCustomer.`id` IN (SELECT `customerId` FROM tblSupport WHERE `assemblyName` LIKE '%{$_REQUEST["sName"]}%')");
@@ -908,7 +912,8 @@ if(!class_exists("Management")){
                   SUB.pYear,
                   SUB.pMonth,
                   SUB.eYear,
-                  SUB.eMonth
+                  SUB.eMonth,
+                  (SELECT email FROM tblCustomer WHERE id = S.customerId) as email
                 FROM tblShipping S JOIN tblSubscription SUB ON S.subsciptionId = SUB.id
                 WHERE S.shippingType = '{$type}' AND `status` = '1' 
                 ORDER BY regDate DESC

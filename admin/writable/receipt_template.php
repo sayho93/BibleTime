@@ -128,7 +128,7 @@ if($totalLiteral == "") $totalLiteral = "영";
     <script src="/admin/writable/jspdf/jspdf.min.js"></script>
     <script src="/admin/writable/jspdf/libs/html2canvas/dist/html2canvas.js"></script>
     <script>
-        var formJson = <?=preg_replace('/[\x00-\x1F\x7F]/', '', $formJson)?>;
+        var formJson = '<?=preg_replace('/[\x00-\x1F\x7F]/', '', $formJson)?>';
         var currentId = "<?=$_REQUEST["id"]?>";
 
         function exportToExcel(){
