@@ -1532,7 +1532,10 @@ if(!class_exists("Management")){
             if($bankCode != "") $sql = "SELECT `desc` FROM tblBankType WHERE code = '{$bankCode}'";
             $cbType = $this->getValue($sql, "desc");
 
-            $historyContent = "관리자 구독 신규 추가 - 결제금액: {$totalPrice} 배송지: {$rAddr} {$rAddrDetail} 카드사/은행: {$cbType} 카드번호/계좌번호: {$info}";
+            $sql = "SELECT `desc` FROM tblPublication WHERE id = '{$publicationId}'";
+            $pName = $this->getValue($sql, "desc");
+            
+            $historyContent = "관리자 구독 신규 추가 - 결제금액: {$totalPrice} 배송지: {$rAddr} {$rAddrDetail} 간행물: {$pName} 카드사/은행: {$cbType} 카드번호/계좌번호: {$info}";
             $sql = "
                 INSERT INTO tblCustomerHistory(customerId, modifier, type, content, regDate)
                 VALUES(

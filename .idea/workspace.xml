@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="953164ab-ba23-43a2-afe9-6d67381cac5b" name="Default" comment="stockList added">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/classes/Management.php" beforeDir="false" afterPath="$PROJECT_DIR$/common/classes/Management.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -110,14 +109,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="209" />
-          <entry key="php" value="56361" />
+          <entry key="php" value="56468" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="209" />
           <entry key="HTML" value="1" />
-          <entry key="PHP" value="55926" />
+          <entry key="PHP" value="56033" />
           <entry key="SQL" value="434" />
         </counts>
       </usages-collector>
@@ -192,8 +191,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/common/classes/Management.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="549">
-              <caret line="1774" column="22" selection-start-line="1774" selection-start-column="22" selection-end-line="1774" selection-end-column="22" />
+            <state relative-caret-position="567">
+              <caret line="1536" column="12" lean-forward="true" selection-start-line="1536" selection-start-column="12" selection-end-line="1536" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -220,7 +219,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>jOrder</find>
       <find>jPayS</find>
       <find>$list</find>
       <find>filesave</find>
@@ -250,6 +248,7 @@
       <find>updateSubscription</find>
       <find>setSubscriptionInfo</find>
       <find>setSupportInfo</find>
+      <find>setSub</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -576,12 +575,12 @@
       <workItem from="1538112887406" duration="15000" />
       <workItem from="1538112943442" duration="15527000" />
       <workItem from="1538363389780" duration="15563000" />
-      <workItem from="1538456976919" duration="10792000" />
+      <workItem from="1538456976919" duration="11003000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="481776000" />
+    <option name="totallyTimeSpent" value="481987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -965,8 +964,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/common/classes/Management.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="1774" column="22" selection-start-line="1774" selection-start-column="22" selection-end-line="1774" selection-end-column="22" />
+        <state relative-caret-position="567">
+          <caret line="1536" column="12" lean-forward="true" selection-start-line="1536" selection-start-column="12" selection-end-line="1536" selection-end-column="12" />
         </state>
       </provider>
     </entry>
