@@ -1129,12 +1129,14 @@ if(!class_exists("Management")){
                 CASE P.buyType
                     WHEN 'SUB' THEN (SELECT totalPrice FROM tblSubscription SUB WHERE SUB.paymentId = P.id)
                     WHEN 'SUP' THEN (SELECT totalPrice FROM tblSupport SUP WHERE SUP.paymentId = P.id)
+                    ELSE '0'
                 END AS totalPrice
                 FROM tblPayment P JOIN tblPayMethod PM ON P.payMethodId = PM.id JOIN tblCustomer C ON PM.customerId = C.id
                 WHERE P.type = '{$type}'
                 {$rangeWhereStmt}
                 ORDER BY P.regDate DESC
             ";
+
             $res = $this->getArray($sql);
             if($type == "BA"){
                 $this->connect_ext_db();

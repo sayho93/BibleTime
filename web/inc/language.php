@@ -31,7 +31,7 @@
         geoip_close($gi);
 
         //test
-        $country_code = "kr";
+//        $country_code = "kr";
 
         setcookie("btLocale", $country_code, time()+60*60*24*100, "/");
     }

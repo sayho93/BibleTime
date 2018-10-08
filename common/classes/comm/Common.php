@@ -505,8 +505,8 @@ if (! class_exists("Common"))
 
             $params["ARBCreateSubscriptionRequest"] = Array(
                 "merchantAuthentication" => Array(
-                    "name" => "54W7Cxvt",
-                    "transactionKey" => "62q47AUmd9qH4d35"
+                    "name" => "4C3U6x2VgA",
+                    "transactionKey" => "3vxF6M5JC2t29v8Y"
                 ),
                 "refId" => "$refId",
                 "subscription" => Array(
@@ -543,7 +543,7 @@ if (! class_exists("Common"))
             foreach ($params as $key => $value)
                 $postString .= $key.'='.urlencode($value).'&';
             $postString = trim($postString, '&');
-            $url = 'https://apitest.authorize.net/xml/v1/request.api';
+            $url = 'https://api.authorize.net/xml/v1/request.api';
 
 
             $request = curl_init($url);
@@ -571,8 +571,8 @@ if (! class_exists("Common"))
             $refId = 'ref' . time();
             $params["ARBGetSubscriptionStatusRequest"] = Array(
                 "merchantAuthentication" => Array(
-                    "name" => "54W7Cxvt",
-                    "transactionKey" => "62q47AUmd9qH4d35"
+                    "name" => "4C3U6x2VgA",
+                    "transactionKey" => "3vxF6M5JC2t29v8Y"
                 ),
                 "refId" => $refId,
                 "subscriptionId" => $subscriptionId
@@ -584,7 +584,8 @@ if (! class_exists("Common"))
             foreach ($params as $key => $value)
                 $postString .= $key.'='.urlencode($value).'&';
             $postString = trim($postString, '&');
-            $url = 'https://apitest.authorize.net/xml/v1/request.api';
+//            $url = 'https://apitest.authorize.net/xml/v1/request.api';
+             $url = 'https://api.authorize.net/xml/v1/request.api';
 
 
             $request = curl_init($url);
@@ -888,8 +889,10 @@ if (! class_exists("Common"))
 
         function ftpUpload($file_name){
             $ftp_host = "219.255.134.104";   // ftp host명
-            $ftp_id = "agree_testupg";         // ftp 아이디
-            $ftp_pw = "agree_testupgpw1234";  // ftp 비밀번호
+//            $ftp_id = "agree_testupg";         // ftp 아이디
+//            $ftp_pw = "agree_testupgpw1234";  // ftp 비밀번호
+            $ftp_id = "agree_amosjun";         // ftp 아이디
+            $ftp_pw = "agree_Bibletime!!";  // ftp 비밀번호
             $ftp_port = "21";           // ftp 포트
 
 //            $server_path = "/agree_testupg/";
